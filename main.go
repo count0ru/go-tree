@@ -6,17 +6,36 @@ import (
 	"log"
 )
 
-func main() {
+var startPath = "./maindir"
+
+
+func getDirectoryItems(path string) {
 	
-	listDirectories, err := ioutil.ReadDir("./")
+	listDirectories, err := ioutil.ReadDir(path)
 	if err != nil {
 		log.Fatal("Cant read directory", err)
 	}
-
-	for _, item := range listDirectories {
+	
+	fmt.Println("-")
+	
+	for idx, item := range listDirectories {
 		if item.IsDir() {
-		  fmt.Println(item.Name())		
+		  if idx == len(listDirectories) - 1 {
+		 	fmt.Println("└───" + item.Name())		
+		  } else {
+		  	fmt.Println("├───" + item.Name())		
+		  }
+		  getDirectoryItems(path + "/" + item.Name())
 		}
 	}
+
+
+}
+
+func main() {
+	
+	fmt.Println("├───" + startPath)
+	getDirectoryItems(startPath)
+
 }
 
